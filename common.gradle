@@ -22,7 +22,16 @@ plugins {
 	id 'com.matthewprenger.cursegradle' version '1.0.8'
 }
 
+// ForgeGradle 2.3 with Kotlin to add new sourceSets
+apply plugin: 'java'
+sourceSets {
+	common_api {}
+	common_main {}
+	common_test {}
+}
+
 apply plugin: project.forgegradle_plugin
+def fg_plugin = plugins.findPlugin project.forgegradle_plugin
 
 // Fix compatibility issue between Gradle 4 and ForgeGradle 2.1
 if (project.forgegradle.contains('1.2') || project.forgegradle.contains('2.1'))
@@ -119,7 +128,6 @@ dependencies {
 }
 
 sourceSets {
-	def fg_plugin = plugins.findPlugin project.forgegradle_plugin
 	[[common: common_api, src: api], [common: common_main, src: main], [common: common_test, src: test]].each { s ->
 		s.common.java {
 			srcDirs = ["../src/${s.src.name}/java"]
@@ -170,7 +178,6 @@ if (!reobf.hasProperty('dependsOn')) {
 	}
 } else {
 	task reobfShadowJar(dependsOn: 'genSrgs', type: net.minecraftforge.gradle.tasks.user.reobf.ReobfTask) {
-		def fg_plugin = plugins.findPlugin project.forgegradle_plugin
 		exceptorCfg = fg_plugin.delayedFile net.minecraftforge.gradle.user.UserConstants.EXC_SRG
 		srg = fg_plugin.delayedFile net.minecraftforge.gradle.user.UserConstants.REOBF_SRG
 		fieldCsv = fg_plugin.delayedFile net.minecraftforge.gradle.user.UserConstants.FIELD_CSV
