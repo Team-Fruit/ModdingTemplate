@@ -150,6 +150,8 @@ ext.commonManifest = {
 		attributes 'FMLCorePluginContainsFMLMod': project.extra_fmlcore
 	if (project.isProperty('extra_fmlat'))
 		attributes 'FMLAT': project.extra_fmlat
+	// Prevent from CurseForge duplicate error
+	attributes 'ModVersion': mod_version_full
 	attributes manifests.manifests
 }
 
